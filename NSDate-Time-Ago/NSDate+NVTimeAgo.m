@@ -20,8 +20,8 @@
 #define YEAR    (DAY    * 365.24)
 
 /*
-    Mysql Datetime Formatted As Time Ago
-    Takes in a mysql datetime string and returns the Time Ago date format
+ Mysql Datetime Formatted As Time Ago
+ Takes in a mysql datetime string and returns the Time Ago date format
  */
 + (NSString *)mysqlDatetimeFormattedAsTimeAgo:(NSString *)mysqlDatetime
 {
@@ -37,13 +37,23 @@
     
 }
 
+/*
+ NSDateFormatter object which sets AM and PM symbols to lowercase
+ */
+- (NSDateFormatter *)commonDateFormater
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.AMSymbol = @"am";
+    formatter.PMSymbol = @"pm";
+    return formatter;
+}
 
 /*
-    Formatted As Time Ago
-    Returns the date formatted as Time Ago (in the style of the mobile time ago date formatting for Facebook)
+ Formatted As Time Ago
+ Returns the date formatted as Time Ago (in the style of the mobile time ago date formatting for Facebook)
  */
 - (NSString *)formattedAsTimeAgo
-{    
+{
     //Now
     NSDate *now = [NSDate date];
     NSTimeInterval secondsSince = -(int)[self timeIntervalSinceDate:now];
@@ -51,7 +61,7 @@
     //Should never hit this but handle the future case
     if(secondsSince < 0)
         return @"In The Future";
-        
+    
     
     // < 1 minute = "Just now"
     if(secondsSince < MINUTE)
@@ -61,22 +71,22 @@
     // < 1 hour = "x minutes ago"
     if(secondsSince < HOUR)
         return [self formatMinutesAgo:secondsSince];
-  
+    
     
     // Today = "x hours ago"
     if([self isSameDayAs:now])
         return [self formatAsToday:secondsSince];
- 
+    
     
     // Yesterday = "Yesterday at 1:28 PM"
     if([self isYesterday:now])
         return [self formatAsYesterday];
-  
+    
     
     // < Last 7 days = "Friday at 1:48 AM"
     if([self isLastWeek:secondsSince])
         return [self formatAsLastWeek];
-
+    
     
     // < Last 30 days = "March 30 at 1:14 PM"
     if([self isLastMonth:secondsSince])
@@ -98,8 +108,8 @@
  */
 
 /*
-    Is Same Day As
-    Checks to see if the dates are the same calendar day
+ Is Same Day As
+ Checks to see if the dates are the same calendar day
  */
 - (BOOL)isSameDayAs:(NSDate *)comparisonDate
 {
@@ -127,20 +137,20 @@
 //From https://github.com/erica/NSDate-Extensions/blob/master/NSDate-Utilities.m
 - (NSDate *) dateBySubtractingDays: (NSInteger) numDays
 {
-	NSTimeInterval aTimeInterval = [self timeIntervalSinceReferenceDate] + DAY * -numDays;
-	NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:aTimeInterval];
-	return newDate;
+    NSTimeInterval aTimeInterval = [self timeIntervalSinceReferenceDate] + DAY * -numDays;
+    NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:aTimeInterval];
+    return newDate;
 }
 
 
 /*
-    Is Last Week
-    We want to know if the current date object is the first occurance of
-    that day of the week (ie like the first friday before today 
-    - where we would colloquially say "last Friday")
-    ( within 6 of the last days)
+ Is Last Week
+ We want to know if the current date object is the first occurance of
+ that day of the week (ie like the first friday before today
+ - where we would colloquially say "last Friday")
+ ( within 6 of the last days)
  
-    TODO: make this more precise (1 week ago, if it is 7 days ago check the exact date)
+ TODO: make this more precise (1 week ago, if it is 7 days ago check the exact date)
  */
 - (BOOL)isLastWeek:(NSTimeInterval)secondsSince
 {
@@ -149,10 +159,10 @@
 
 
 /*
-    Is Last Month
-    Previous 31 days?
-    TODO: Validate on fb
-    TODO: Make last day precise
+ Is Last Month
+ Previous 31 days?
+ TODO: Validate on fb
+ TODO: Make last day precise
  */
 - (BOOL)isLastMonth:(NSTimeInterval)secondsSince
 {
@@ -161,8 +171,8 @@
 
 
 /*
-    Is Last Year
-    TODO: Make last day precise
+ Is Last Year
+ TODO: Make last day precise
  */
 
 - (BOOL)isLastYear:(NSTimeInterval)secondsSince
@@ -179,7 +189,7 @@
 
 
 /*
-   ========================== Formatting Methods ==========================
+ ========================== Formatting Methods ==========================
  */
 
 
@@ -215,7 +225,7 @@
 - (NSString *)formatAsYesterday
 {
     //Create date formatter
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [self commonDateFormater];
     
     //Format
     [dateFormatter setDateFormat:@"h:mm a"];
@@ -227,8 +237,8 @@
 - (NSString *)formatAsLastWeek
 {
     //Create date formatter
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-
+    NSDateFormatter *dateFormatter = [self commonDateFormater];
+    
     //Format
     [dateFormatter setDateFormat:@"EEEE 'at' h:mm a"];
     return [dateFormatter stringFromDate:self];
@@ -239,7 +249,7 @@
 - (NSString *)formatAsLastMonth
 {
     //Create date formatter
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [self commonDateFormater];
     
     //Format
     [dateFormatter setDateFormat:@"MMMM d 'at' h:mm a"];
@@ -251,7 +261,7 @@
 - (NSString *)formatAsLastYear
 {
     //Create date formatter
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [self commonDateFormater];
     
     //Format
     [dateFormatter setDateFormat:@"MMMM d"];
@@ -263,7 +273,7 @@
 - (NSString *)formatAsOther
 {
     //Create date formatter
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [self commonDateFormater];
     
     //Format
     [dateFormatter setDateFormat:@"LLLL d, yyyy"];
@@ -284,8 +294,8 @@
  */
 
 /*
-    Test the format
-    TODO: Implement unit tests
+ Test the format
+ TODO: Implement unit tests
  */
 + (void)runTests
 {
