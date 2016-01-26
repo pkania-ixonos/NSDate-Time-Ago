@@ -29,7 +29,7 @@
     //If this is not in UTC, we don't have any knowledge about
     //which tz it is. MUST BE IN UTC.
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [formatter setDateFormat:@"yyyy-MMM-dd HH:mm:ss"];
     
     NSDate *date = [formatter dateFromString:mysqlDatetime];
     
