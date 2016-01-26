@@ -29,7 +29,7 @@
     //If this is not in UTC, we don't have any knowledge about
     //which tz it is. MUST BE IN UTC.
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MMM-dd HH:mm:ss"];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     
     NSDate *date = [formatter dateFromString:mysqlDatetime];
     
@@ -228,7 +228,7 @@
     NSDateFormatter *dateFormatter = [self commonDateFormater];
     
     //Format
-    [dateFormatter setDateFormat:@"h:mm a"];
+    [dateFormatter setDateFormat:@"h:mma"];
     return [NSString stringWithFormat:@"Yesterday at %@", [dateFormatter stringFromDate:self]];
 }
 
@@ -240,7 +240,7 @@
     NSDateFormatter *dateFormatter = [self commonDateFormater];
     
     //Format
-    [dateFormatter setDateFormat:@"EEEE 'at' h:mm a"];
+    [dateFormatter setDateFormat:@"EEE, h:mma"];
     return [dateFormatter stringFromDate:self];
 }
 
@@ -252,7 +252,7 @@
     NSDateFormatter *dateFormatter = [self commonDateFormater];
     
     //Format
-    [dateFormatter setDateFormat:@"MMMM d 'at' h:mm a"];
+    [dateFormatter setDateFormat:@"MMM d, h:mma"];
     return [dateFormatter stringFromDate:self];
 }
 
@@ -264,7 +264,7 @@
     NSDateFormatter *dateFormatter = [self commonDateFormater];
     
     //Format
-    [dateFormatter setDateFormat:@"MMMM d"];
+    [dateFormatter setDateFormat:@"MMM d"];
     return [dateFormatter stringFromDate:self];
 }
 
@@ -276,7 +276,7 @@
     NSDateFormatter *dateFormatter = [self commonDateFormater];
     
     //Format
-    [dateFormatter setDateFormat:@"LLLL d, yyyy"];
+    [dateFormatter setDateFormat:@"LLL d, yyyy"];
     return [dateFormatter stringFromDate:self];
 }
 
